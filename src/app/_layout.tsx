@@ -7,6 +7,8 @@ export default function RootLayout() {
     <Stack>
       {/* sign up form is the first screen that displays */}
       <Stack.Screen name="index" options={{ title: "Sign Up" }} />
+      {/* confirmation screen after the form is submitted */}
+      <Stack.Screen name="confirmation" options={{ title: "Success" }} />
     </Stack>
   );
 }

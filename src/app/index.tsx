@@ -1,6 +1,7 @@
 // Sign up screen
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
 import { Controller, useForm } from "react-hook-form";
 import {
   Pressable,
@@ -29,9 +30,12 @@ export default function SignUpScreen() {
     },
   });
 
-  // only runs if everything passes validation
+  // only runs if everything passes validation, then sends the first name to the confirmation screen
   const onSubmit = (data: SignUpFormData) => {
-    console.log(data.firstName, data.lastName, data.email);
+    router.replace({
+      pathname: "/confirmation",
+      params: { firstName: data.firstName },
+    });
   };
 
   return (
@@ -110,7 +114,55 @@ export default function SignUpScreen() {
         )}
       </View>
 
-      {/* still need to add password + confirm password */}
+      {/* password, hidden while typing */}
+      <View style={styles.field}>
+        <Text style={styles.label}>Password</Text>
+        <Controller
+          control={control}
+          name="password"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.input}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder="Password"
+              placeholderTextColor="#999"
+              secureTextEntry
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          )}
+        />
+        {errors.password && (
+          <Text style={styles.error}>{errors.password.message}</Text>
+        )}
+      </View>
+
+      {/* confirm password, mismatch error from the schema shows up here */}
+      <View style={styles.field}>
+        <Text style={styles.label}>Confirm password</Text>
+        <Controller
+          control={control}
+          name="confirmPassword"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              style={styles.input}
+              value={value}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder="Confirm password"
+              placeholderTextColor="#999"
+              secureTextEntry
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          )}
+        />
+        {errors.confirmPassword && (
+          <Text style={styles.error}>{errors.confirmPassword.message}</Text>
+        )}
+      </View>
 
       <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}>Sign Up</Text>
