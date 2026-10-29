@@ -32,6 +32,12 @@ export default function SignUpScreen() {
 
   // only runs if everything passes validation, then sends the first name to the confirmation screen
   const onSubmit = (data: SignUpFormData) => {
+    // not logging passwords
+    console.log({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+    });
     router.replace({
       pathname: "/confirmation",
       params: { firstName: data.firstName },
